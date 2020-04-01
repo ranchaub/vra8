@@ -1,5 +1,5 @@
 name: Randhir-Linux
-version: 2
+version: 3
 formatVersion: 1
 inputs: {}
 resources:
@@ -16,7 +16,7 @@ resources:
       osType: linux
       account: ICDS-Ansible
       username: root
-      password: XXXXXXXXX
+      password: Welcome!23
       playbooks:
         provision:
           - /root/default.yml
