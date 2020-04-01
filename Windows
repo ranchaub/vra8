@@ -1,0 +1,33 @@
+formatVersion: 1
+inputs:
+  SelectDisks:
+    type: string
+    enum:
+      - One-Disk
+      - Two-Disks
+resources:
+  Cloud_vSphere_Disk_1:
+    type: Cloud.vSphere.Disk
+    properties:
+      storagePolicy: VMW-Storage-Silver-Tier
+      capacityGb: 10
+      count: '${input.SelectDisks == "One-Disk" ? 0 : 2}'
+  Cloud_vSphere_Machine_1:
+    type: Cloud.vSphere.Machine
+    properties:
+      storage: null
+      constraints:
+        - tag: '${input.SelectDisks == "Two-Disks" ? "Silver" : "Gold"}'
+      image: QA-Windows
+      flavor: QA-Small
+      customizationSpec: Vrawin
+      networks:
+        - network: '${resource.Cloud_vSphere_Network_1.id}'
+          assignment: static
+      attachedDisks: '${map_to_object(resource.Cloud_vSphere_Disk_1[*].id, "source")}'
+  Cloud_vSphere_Network_1:
+    type: Cloud.vSphere.Network
+    properties:
+      networkType: existing
+      name: vranew
+      networkCidr: 192.168.20.0/24
