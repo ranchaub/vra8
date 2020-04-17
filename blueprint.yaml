@@ -1,5 +1,3 @@
-name: Randhir-Linux
-version: 1
 formatVersion: 1
 inputs: {}
 resources:
@@ -14,9 +12,9 @@ resources:
       authentication: usernamePassword
       host: '${resource.Cloud_vSphere_Machine_1.*}'
       osType: linux
-      account: ICDS_Ansible
+      account: ICDS-Ansible
       username: root
-      password: Welcome!23
+      password: XXXXXXXXX
       playbooks:
         provision:
           - /root/default.yml
@@ -43,4 +41,4 @@ resources:
     properties:
       networkType: existing
       name: vranew
-      networkCidr: 192.168.20.0/24 
+      networkCidr: 192.168.20.0/24
