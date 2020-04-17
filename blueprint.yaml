@@ -1,5 +1,5 @@
 name: Randhir-Linux
-version: 2
+version: 1
 formatVersion: 1
 inputs: {}
 resources:
@@ -14,7 +14,7 @@ resources:
       authentication: usernamePassword
       host: '${resource.Cloud_vSphere_Machine_1.*}'
       osType: linux
-      account: ICDS-Ansible
+      account: ICDS_Ansible
       username: root
       password: Welcome!23
       playbooks:
