@@ -45,7 +45,7 @@ resources:
       name: vranew
       networkCidr: 192.168.20.0/24
 name: MCDS_Windows
-version: 1      
+version: 2      
 formatVersion: 1
 inputs: {}
 resources:
