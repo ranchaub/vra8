@@ -14,9 +14,9 @@ resources:
       authentication: usernamePassword
       host: '${resource.Cloud_vSphere_Machine_1.*}'
       osType: linux
-      account: ICDS-Ansible
+      account: ICDS_Ansible
       username: root
-      password: XXXXXXXXX
+      password: Welcome!23
       playbooks:
         provision:
           - /root/default.yml
