@@ -1,0 +1,65 @@
+name: Window-Ansible
+version: 1
+formatVersion: 1
+inputs:
+  servertype:
+    type: string
+    enum:
+      - APP
+      - DB
+      - WEB
+  os-image:
+    type: string
+    oneOf:
+      - title: ICDS-Windows2016
+        const: ICDS-Windows2016
+      - title: ICDS-Windows2019
+        const: ICDS-Windows2019
+    title: Select Image/OS
+    description: Specify which operating system should be deployed on the machine.
+  SelectFlavor:
+    type: string
+    enum:
+      - QA-Small
+      - QA-Medium
+      - QA-High
+  SelectDisks:
+    type: string
+    enum:
+      - One-Disk
+      - Two-Disks
+  SelectZone:
+    type: string
+    enum:
+      - Zone1
+      - Zone2
+resources:
+  Cloud_vSphere_Disk_1:
+    type: Cloud.vSphere.Disk
+    properties:
+      storagePolicy: VMW-Storage-Silver-Tier
+      capacityGb: 10
+      count: '${input.SelectDisks == "One-Disk" ? 0 : 2}'
+  Cloud_Machine_1:
+    type: Cloud.Machine
+    properties:
+      osType: WIN
+      serverType: '${input.servertype}'
+      storage: null
+      constraints:
+        - tag: '${input.SelectDisks == "Two-Disks" ? "Silver" : "Gold"}'
+        - tag: '${input.SelectZone}'
+      image: '${input.os-image}'
+      flavor: '${input.SelectFlavor}'
+      customizationSpec: '${input.SelectZone == "Zone1" ? "Vrawin" : "Vrawin"}'
+      networks:
+        - network: '${resource.Cloud_Network_1.id}'
+          assignment: static
+      attachedDisks:
+        - source: '${resource.Cloud_vSphere_Disk_1.id}'
+  Cloud_Network_1:
+    type: Cloud.Network
+    properties:
+      networkType: existing
+      name: '${input.SelectZone == "Zone1" ? "VMW-Production" : "VMW-Production-B"}'
+      networkCidr: 192.168.20.0/24
