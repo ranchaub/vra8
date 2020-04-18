@@ -20,9 +20,9 @@ inputs:
   SelectFlavor:
     type: string
     enum:
-      - QA-Small
-      - QA-Medium
-      - QA-High
+      - ICDS-Small
+      - ICDS-Medium
+      - ICDS-High
   SelectDisks:
     type: string
     enum:
@@ -31,8 +31,8 @@ inputs:
   SelectZone:
     type: string
     enum:
-      - Zone1
-      - Zone2
+      - Production
+      - Managment
 resources:
   Cloud_vSphere_Disk_1:
     type: Cloud.vSphere.Disk
@@ -51,7 +51,7 @@ resources:
         - tag: '${input.SelectZone}'
       image: '${input.os-image}'
       flavor: '${input.SelectFlavor}'
-      customizationSpec: '${input.SelectZone == "Zone1" ? "Vrawin" : "Vrawin"}'
+      customizationSpec: '${input.SelectZone == "Production" ? "Vrawin" : "Vrawin"}'
       networks:
         - network: '${resource.Cloud_Network_1.id}'
           assignment: static
@@ -61,5 +61,5 @@ resources:
     type: Cloud.Network
     properties:
       networkType: existing
-      name: '${input.SelectZone == "Zone1" ? "VMW-Production" : "VMW-Production-B"}'
+      name: '${input.SelectZone == "Production" ? "VMW-Production" : "VMW-Production-B"}'
       networkCidr: 192.168.20.0/24
