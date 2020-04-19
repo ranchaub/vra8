@@ -1,0 +1,20 @@
+name: MCDS_Windows
+version: 3  
+formatVersion: 1
+inputs: {}
+resources:
+  Cloud_vSphere_Machine_1:
+    type: Cloud.vSphere.Machine
+    properties:
+      image: ICDS-Windows2016
+      flavor: ICDS-Small
+      customizationSpec: Vrawin
+      networks:
+        - network: '${resource.Cloud_vSphere_Network_1.id}'
+          assignment: static
+  Cloud_vSphere_Network_1:
+    type: Cloud.vSphere.Network
+    properties:
+      networkType: existing
+      name: vranew
+      networkCidr: 192.168.20.0/24

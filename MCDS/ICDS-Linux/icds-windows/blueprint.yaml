@@ -1,0 +1,46 @@
+name: MCDS_linux
+version: 3 
+formatVersion: 1
+inputs: {}
+resources:
+  Cloud_Ansible_1:
+    type: Cloud.Ansible
+    metadata:
+      layoutPosition:
+        - 0
+        - 0
+    properties:
+      inventoryFile: /etc/ansible/hosts
+      authentication: usernamePassword
+      host: '${resource.Cloud_vSphere_Machine_1.*}'
+      osType: linux
+      account: ICDS_Ansible
+      username: root
+      password: Welcome!23
+      playbooks:
+        provision:
+          - /root/default.yml
+  Cloud_vSphere_Machine_1:
+    type: Cloud.vSphere.Machine
+    metadata:
+      layoutPosition:
+        - 0
+        - 1
+    properties:
+      constraints:
+        - tag: compute
+      image: Linux
+      flavor: QA-Small
+      networks:
+        - network: '${resource.Cloud_vSphere_Network_1.id}'
+          assignment: static
+  Cloud_vSphere_Network_1:
+    type: Cloud.vSphere.Network
+    metadata:
+      layoutPosition:
+        - 1
+        - 0
+    properties:
+      networkType: existing
+      name: vranew
+      networkCidr: 192.168.20.0/24
