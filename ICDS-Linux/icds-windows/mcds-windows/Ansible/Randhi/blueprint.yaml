@@ -1,0 +1,50 @@
+name: Randhir_Windows
+version: 1
+formatVersion: 1
+inputs:
+  os-image:
+    type: string
+    oneOf:
+      - title: ICDS-Windows2016
+        const: ICDS-Windows
+      - title: ICDS-Windows2019
+        const: ICDS-Windows2019
+  SelectZone:
+    type: string
+    enum:
+      - Production
+      - Management
+  SelectFlavor:
+    type: string
+    enum:
+      - ICDS-Small
+      - ICDS-Medium
+      - ICDS-High
+  SelectDisks:
+    type: string
+    enum:
+      - One-Disk
+      - Two-Disks
+resources:
+  Cloud_vSphere_Disk_1:
+    type: Cloud.vSphere.Disk
+    properties:
+      capacityGb: 10
+      count: '${input.SelectDisks == "One-Disk" ? 0 : 2}'
+  Cloud_vSphere_Machine_1:
+    type: Cloud.vSphere.Machine
+    properties:
+      constraints:
+        - tag: '${input.SelectZone}'
+      image: '${input.os-image}'
+      flavor: '${input.SelectFlavor}'
+      customizationSpec: '${input.SelectZone == "Production" ? "Vrawin" : "Vrawin"}'
+      networks:
+        - network: '${resource.Cloud_vSphere_Network_1.id}'
+          assignment: static
+  Cloud_vSphere_Network_1:
+    type: Cloud.vSphere.Network
+    properties:
+      networkType: existing
+      name: vranew
+      networkCidr: 192.168.20.0/24
